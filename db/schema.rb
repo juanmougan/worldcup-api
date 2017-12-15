@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171213020412) do
+ActiveRecord::Schema.define(version: 20171214021830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "incidence_details", force: :cascade do |t|
+    t.string "detail"
+    t.integer "incidence"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "incidences", force: :cascade do |t|
+    t.bigint "player_id"
+    t.bigint "match_id"
+    t.integer "incidence_type"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["match_id"], name: "index_incidences_on_match_id"
+    t.index ["player_id"], name: "index_incidences_on_player_id"
+  end
 
   create_table "matches", force: :cascade do |t|
     t.integer "home_goals"
@@ -49,6 +67,8 @@ ActiveRecord::Schema.define(version: 20171213020412) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "incidences", "matches"
+  add_foreign_key "incidences", "players"
   add_foreign_key "matches", "teams", column: "away_team_id"
   add_foreign_key "matches", "teams", column: "home_team_id"
   add_foreign_key "players", "teams"
