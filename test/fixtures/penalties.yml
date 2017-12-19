@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  player: one
+  match: one
+  length: 1
+  status: 1
+
+two:
+  player: two
+  match: two
+  length: 1
+  status: 1

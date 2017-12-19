@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :penalties
   resources :incidences
   resources :matches
   resources :players

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171214021830) do
+ActiveRecord::Schema.define(version: 20171219024120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,8 +41,20 @@ ActiveRecord::Schema.define(version: 20171214021830) do
     t.datetime "updated_at", null: false
     t.bigint "home_team_id"
     t.bigint "away_team_id"
+    t.integer "order"
     t.index ["away_team_id"], name: "index_matches_on_away_team_id"
     t.index ["home_team_id"], name: "index_matches_on_home_team_id"
+  end
+
+  create_table "penalties", force: :cascade do |t|
+    t.bigint "player_id"
+    t.bigint "match_id"
+    t.integer "length"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["match_id"], name: "index_penalties_on_match_id"
+    t.index ["player_id"], name: "index_penalties_on_player_id"
   end
 
   create_table "players", force: :cascade do |t|
@@ -71,6 +83,8 @@ ActiveRecord::Schema.define(version: 20171214021830) do
   add_foreign_key "incidences", "players"
   add_foreign_key "matches", "teams", column: "away_team_id"
   add_foreign_key "matches", "teams", column: "home_team_id"
+  add_foreign_key "penalties", "matches"
+  add_foreign_key "penalties", "players"
   add_foreign_key "players", "teams"
   add_foreign_key "teams", "users"
 end
