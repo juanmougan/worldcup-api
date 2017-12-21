@@ -1,13 +1,17 @@
 class ProcessBookedPlayersJob < ApplicationJob
   queue_as :default
+  @cards = []
 
   def perform(*args)
     yellows = calculate_cards(1)
     reds = calculate_cards(2)
-    cards = []
-    cards << yellows << reds
-    ProcessPenaltiesJob.perform_later cards
-    PenaltiesFinalizerJob.perform_later
+    @cards << yellows << reds
+  end
+
+  def after_perform(*match)
+    #PenaltiesFinalizerJob.perform_later match
+    ProcessPenaltiesJob.perform_later @cards
+    PenaltiesFinalizerJob.perform_later match
   end
 
   def calculate_cards(card_type)
