@@ -7,6 +7,7 @@ class Match < ApplicationRecord
   protected
   def process_incidences
     ProcessBookedPlayers.perform_later guest
+    PenaltiesFinalizerJob.perform_later self
   end
 
 end
