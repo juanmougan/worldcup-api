@@ -24,7 +24,7 @@ class Incidence < ApplicationRecord
     players.each { |p|
       # 1 is yellow, 2 is red
       counted_cards = Incidence.incidences_for_player_id_and_incidence_type(p.id, card_type).size
-      cards[p.id] = counted_cards
+      cards[p.id.to_s] = counted_cards
     }
     return cards
   end
