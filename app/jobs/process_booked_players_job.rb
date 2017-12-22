@@ -3,6 +3,7 @@ class ProcessBookedPlayersJob < ApplicationJob
   @cards = []
 
   def perform(*args)
+    @cards = []
     yellows = calculate_cards(1)
     reds = calculate_cards(2)
     @cards << yellows << reds
@@ -10,8 +11,8 @@ class ProcessBookedPlayersJob < ApplicationJob
 
   def after_perform(*match)
     #PenaltiesFinalizerJob.perform_later match
-    ProcessPenaltiesJob.perform_later @cards
-    PenaltiesFinalizerJob.perform_later match
+    ProcessPenalties.perform_later @cards
+    PenaltiesFinalizer.perform_later match
   end
 
   def calculate_cards(card_type)

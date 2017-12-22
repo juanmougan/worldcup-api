@@ -10,6 +10,6 @@ class Incidence < ApplicationRecord
 
   protected
   def process_incidences
-    ProcessBookedPlayers.perform_later guest
+    ProcessBookedPlayersJob.perform_later
   end
 end

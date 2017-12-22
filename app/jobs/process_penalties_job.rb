@@ -37,7 +37,14 @@ class ProcessPenaltiesJob < ApplicationJob
         # Create Penalty model
         # penalty = Penalty.create :player_id => p.id, :status => "active"
         # Deactivate Incidences for this Player
-        incidences = Incidence.incidences_for_player_id_and_incidence_type(player.id, 1)
+        incidences = Incidence.incidences_for_player_id_and_incidence_type(player.id, 2).order(:match_id)
+        penalty = Penalty.create(
+          player_id: player.id,
+          match_id: incidences.last.match_id,
+          length: 2,    # Red card has two matches (for now)
+          status: 1
+        )
+        # Deactivate Incidences for this Player
         incidences.each do |i|
           i.status = 2    # 2 is inactive
           i.save!
